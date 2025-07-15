@@ -7,6 +7,7 @@ import { AdminDashboard } from '../pages/AdminDashboard'
 import { NovoImovelPage } from '../pages/NovoImovelPage'
 import { EditarImovelPage } from '../pages/EditarImovelPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
+import FavoritosPage from '../pages/FavoritosPage'
 import { PrivateRoute } from '../components/PrivateRoute'
 import { Header } from '../components/Header'
 import { Footer } from '../components/Footer'
@@ -19,6 +20,7 @@ export const AppRoutes: React.FC = () => {
         {/* Rotas públicas */}
         <Route path="/" element={<HomePage />} />
         <Route path="/imovel/:id" element={<ImovelPage />} />
+        <Route path="/favoritos" element={<FavoritosPage />} />
         <Route path="/login" element={<LoginPage />} />
         
         {/* Rotas privadas (admin) */}

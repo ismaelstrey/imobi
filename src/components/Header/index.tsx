@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaHome, FaUser, FaSignOutAlt } from 'react-icons/fa'
+import { FaHome, FaUser, FaSignOutAlt, FaHeart } from 'react-icons/fa'
 import { useAuth } from '../../hooks/useAuth'
 import { 
   HeaderContainer, 
@@ -29,6 +29,9 @@ export const Header: React.FC = () => {
 
         <Nav>
           <NavLink to="/">Início</NavLink>
+          <NavLink to="/favoritos">
+            <FaHeart /> Favoritos
+          </NavLink>
           
           {isAuthenticated ? (
             <UserMenu>

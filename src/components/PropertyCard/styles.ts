@@ -21,6 +21,39 @@ export const ImageContainer = styled.div`
   overflow: hidden;
 `
 
+interface FavoriteButtonProps {
+  $isFavorite?: boolean;
+}
+
+export const FavoriteButton = styled.button<FavoriteButtonProps>`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing.sm};
+  right: ${({ theme }) => theme.spacing.sm};
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  
+  &:hover {
+    transform: scale(1.1);
+  }
+  
+  svg {
+    color: ${({ theme, $isFavorite }) => 
+      $isFavorite ? theme.colors.error : theme.colors.textSecondary};
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+  }
+`
+
 export const PropertyImage = styled.img`
   width: 100%;
   height: 100%;

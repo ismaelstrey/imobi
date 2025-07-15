@@ -1,7 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FaMapMarkerAlt, FaBed, FaBath, FaCar } from 'react-icons/fa'
+import { FaMapMarkerAlt, FaBed, FaBath, FaCar, FaHeart, FaRegHeart } from 'react-icons/fa'
 import { Imovel } from '../../services/api'
+import { useFavoritesContext } from '../../hooks/FavoritesContext'
 import {
   Card,
   ImageContainer,
@@ -13,7 +14,8 @@ import {
   PropertyLocation,
   PropertyFeatures,
   Feature,
-  ViewButton
+  ViewButton,
+  FavoriteButton
 } from './styles'
 
 interface PropertyCardProps {
@@ -22,6 +24,7 @@ interface PropertyCardProps {
 
 export const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
   const navigate = useNavigate()
+  const { isFavorite, addFavorite, removeFavorite } = useFavoritesContext()
 
   const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('pt-BR', {
@@ -44,6 +47,16 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
     navigate(`/imovel/${imovel.id}`)
   }
 
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.stopPropagation() // Evita que o card seja clicado
+    
+    if (isFavorite(imovel.id)) {
+      removeFavorite(imovel.id)
+    } else {
+      addFavorite(imovel.id)
+    }
+  }
+
   return (
     <Card
       initial={{ opacity: 0, y: 20 }}
@@ -58,6 +71,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ imovel }) => {
         />
         <PriceTag>{formatPrice(imovel.preco)}</PriceTag>
         <TypeBadge>{getTypeLabel(imovel.tipo)}</TypeBadge>
+        <FavoriteButton 
+          onClick={handleToggleFavorite}
+          $isFavorite={isFavorite(imovel.id)}
+          aria-label={isFavorite(imovel.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+        >
+          {isFavorite(imovel.id) ? <FaHeart /> : <FaRegHeart />}
+        </FavoriteButton>
       </ImageContainer>
 
       <CardContent>

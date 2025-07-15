@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Casa/Prédio principal -->
+  <rect x="100" y="200" width="312" height="212" fill="#2563eb" rx="8" />
+  
+  <!-- Telhado -->
+  <polygon points="256,100 80,200 432,200" fill="#1d4ed8" />
+  
+  <!-- Porta -->
+  <rect x="200" y="300" width="112" height="112" fill="#ffffff" rx="4" />
+  
+  <!-- Janelas -->
+  <rect x="130" y="230" width="60" height="50" fill="#ffffff" rx="4" />
+  <rect x="322" y="230" width="60" height="50" fill="#ffffff" rx="4" />
+  
+  <!-- Detalhes da porta -->
+  <rect x="248" y="300" width="16" height="112" fill="#e2e8f0" />
+  <circle cx="235" cy="356" r="8" fill="#1e293b" />
+</svg>
