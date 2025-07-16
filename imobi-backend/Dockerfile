@@ -50,8 +50,12 @@ COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
 COPY --from=builder --chown=nodejs:nodejs /app/pnpm-lock.yaml ./
 
-# Instalar dependências de produção
+# Instalar dependências de produção e o Prisma CLI
 RUN pnpm install --prod --frozen-lockfile
+RUN pnpm add -D prisma
+
+# Gerar cliente Prisma
+RUN pnpm prisma:generate
 
 # Criar diretórios necessários
 RUN mkdir -p logs uploads && chown -R nodejs:nodejs logs uploads
