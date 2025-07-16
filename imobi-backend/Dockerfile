@@ -6,40 +6,52 @@ FROM node:18-alpine AS builder
 # Definir diretório de trabalho
 WORKDIR /app
 
+# Instalar dependências necessárias para compilação
+RUN apk add --no-cache python3 make g++ build-base
+
+# Instalar pnpm globalmente
+RUN npm install -g pnpm
+
 # Copiar arquivos de dependências
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma/
 
 # Instalar dependências
-RUN npm ci --only=production && npm cache clean --force
+RUN pnpm install --frozen-lockfile
 
 # Copiar código fonte
 COPY . .
 
 # Gerar cliente Prisma
-RUN npx prisma generate
+RUN pnpm prisma:generate
 
 # Compilar TypeScript
-RUN npm run build
+RUN pnpm build:docker
 
 # Estágio 2: Produção
-FROM node:18-alpine AS production
+FROM node:18 AS production
 
 # Instalar dumb-init para gerenciamento de processos
-RUN apk add --no-cache dumb-init
+RUN apt-get update && apt-get install -y dumb-init && apt-get clean
+
+# Instalar pnpm globalmente
+RUN npm install -g pnpm
 
 # Criar usuário não-root
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
+RUN groupadd -g 1001 nodejs
+RUN useradd -u 1001 -g nodejs -s /bin/bash -m nodejs
 
 # Definir diretório de trabalho
 WORKDIR /app
 
 # Copiar dependências do estágio de build
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
 COPY --from=builder --chown=nodejs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
+COPY --from=builder --chown=nodejs:nodejs /app/package.json ./
+COPY --from=builder --chown=nodejs:nodejs /app/pnpm-lock.yaml ./
+
+# Instalar dependências de produção
+RUN pnpm install --prod --frozen-lockfile
 
 # Criar diretórios necessários
 RUN mkdir -p logs uploads && chown -R nodejs:nodejs logs uploads
@@ -47,12 +59,8 @@ RUN mkdir -p logs uploads && chown -R nodejs:nodejs logs uploads
 # Mudar para usuário não-root
 USER nodejs
 
-# Expor porta
+# Expor porta (será substituída pelo valor do .env)
 EXPOSE 5000
-
-# Definir variáveis de ambiente
-ENV NODE_ENV=production
-ENV PORT=5000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
@@ -60,4 +68,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 # Comando para iniciar a aplicação
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["node", "dist/app.js"]
+CMD ["node", "dist/server.js"]

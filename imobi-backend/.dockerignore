@@ -1,0 +1,52 @@
+# Arquivos e diretórios a serem ignorados pelo Docker
+
+# Dependências
+node_modules
+
+# Arquivos de build
+dist
+
+# Arquivos de ambiente
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de IDE e editores
+.idea
+.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de teste
+coverage
+.nyc_output
+
+# Arquivos temporários
+.tmp
+.temp
+
+# Arquivos de git
+.git
+.gitignore
+
+# Outros
+README.md
+LICENSE
+.prettierrc
+.eslintrc.js
+tsconfig.json
+tsconfig.test.json
+jest.config.js
+jest.e2e.config.js

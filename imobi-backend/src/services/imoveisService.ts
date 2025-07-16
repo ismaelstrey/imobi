@@ -1,4 +1,4 @@
-import { ImovelRepository } from '@repositories/imovelRepository';
+import { ImovelRepository } from "../repositories/imovelRepository";
 import { Imovel, CreateImovelData, UpdateImovelData, ImovelFilters } from '../types/imovel';
 import { PaginationParams, PaginatedResponse } from '../types/index';
 

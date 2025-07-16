@@ -1,14 +1,15 @@
+// Healthcheck para o Docker
 const http = require('http');
 
 const options = {
-  hostname: 'localhost',
+  host: 'localhost',
   port: process.env.PORT || 5000,
   path: '/api/health',
-  method: 'GET',
-  timeout: 2000
+  timeout: 2000,
 };
 
 const request = http.request(options, (res) => {
+  console.log(`STATUS: ${res.statusCode}`);
   if (res.statusCode === 200) {
     process.exit(0);
   } else {
@@ -16,12 +17,8 @@ const request = http.request(options, (res) => {
   }
 });
 
-request.on('error', () => {
-  process.exit(1);
-});
-
-request.on('timeout', () => {
-  request.destroy();
+request.on('error', (err) => {
+  console.error(`ERROR: ${err.message}`);
   process.exit(1);
 });
 

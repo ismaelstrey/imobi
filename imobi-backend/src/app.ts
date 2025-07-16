@@ -3,34 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
-import prisma from './lib/prisma';
+import morgan from 'morgan';
 import routes from './routes/index';
-import { errorMiddleware, notFoundMiddleware } from '@middlewares/errorMiddleware';
-import winston from 'winston';
-
-// Configurar logger
-const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.errors({ stack: true }),
-    winston.format.json()
-  ),
-  defaultMeta: { service: 'imobi-api' },
-  transports: [
-    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' }),
-  ],
-});
-
-// Em desenvolvimento, também logar no console
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
-
-// Prisma já está inicializado no arquivo lib/prisma.ts
+import { errorMiddleware, notFoundMiddleware } from './middlewares/errorMiddleware';
+import { logger, logStream } from './utils/logger';
 
 // Criar aplicação Express
 const app: express.Application = express();
@@ -64,15 +40,8 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Middleware de logging
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.path}`, {
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
-    timestamp: new Date().toISOString()
-  });
-  next();
-});
+// Middleware de logging com Morgan
+app.use(morgan('combined', { stream: logStream }));
 
 // Servir arquivos estáticos (uploads)
 app.use('/uploads', express.static('uploads'));
@@ -85,40 +54,5 @@ app.use(notFoundMiddleware);
 
 // Middleware de tratamento de erros
 app.use(errorMiddleware);
-
-// Função para inicializar o servidor
-async function startServer() {
-  try {
-    // Testar conexão com o banco
-    await prisma.$connect();
-    logger.info('Conectado ao banco de dados');
-
-    const PORT = process.env.PORT || 5000;
-    
-    app.listen(PORT, () => {
-      logger.info(`Servidor rodando na porta ${PORT}`);
-      logger.info(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
-    });
-  } catch (error) {
-    logger.error('Erro ao inicializar servidor:', error);
-    process.exit(1);
-  }
-}
-
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  logger.info('Recebido SIGINT. Encerrando servidor...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-  logger.info('Recebido SIGTERM. Encerrando servidor...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-// Inicializar servidor
-startServer();
 
 export default app;

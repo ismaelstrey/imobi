@@ -34,7 +34,7 @@ module.exports = {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@types/(.*)$': '<rootDir>/src/types/$1',
     '^@config/(.*)$': '<rootDir>/src/config/$1',
-    '^bcrypt$': '<rootDir>/src/tests/__mocks__/bcrypt.ts',
+    '^crypto$': '<rootDir>/src/tests/__mocks__/crypto.ts',
     '^jsonwebtoken$': '<rootDir>/src/tests/__mocks__/jsonwebtoken.ts',
     '^../app$': '<rootDir>/src/tests/__mocks__/app.ts',
     '^../lib/prisma$': '<rootDir>/src/tests/__mocks__/prisma.ts'

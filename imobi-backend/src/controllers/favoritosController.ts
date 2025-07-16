@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { FavoritosService } from '@services/favoritosService';
+import { FavoritosService } from "../services/favoritosService";
 
 const favoritosService = new FavoritosService();
 

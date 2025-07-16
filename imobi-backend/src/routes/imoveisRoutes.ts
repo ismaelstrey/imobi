@@ -1,12 +1,12 @@
 import express, { Router } from 'express';
-import { ImoveisController } from '@controllers/imoveisController';
-import { authenticate, requireAdmin, optionalAuth } from '@middlewares/authMiddleware';
+import { ImoveisController } from "../controllers/imoveisController";
+import { authenticate, requireAdmin, optionalAuth } from "../middlewares/authMiddleware";
 import { 
   validateImovel, 
   validatePagination,
   validateId,
   handleValidationErrors 
-} from '@middlewares/validationMiddleware';
+} from "../middlewares/validationMiddleware";
 
 const router: express.Router = Router();
 

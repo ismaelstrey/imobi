@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
-import { FavoritosController } from '@controllers/favoritosController';
-import { authenticate } from '@middlewares/authMiddleware';
-import { validateId, handleValidationErrors } from '@middlewares/validationMiddleware';
+import { FavoritosController } from "../controllers/favoritosController";
+import { authenticate } from "../middlewares/authMiddleware";
+import { validateId, handleValidationErrors } from "../middlewares/validationMiddleware";
 
 const router: express.Router = Router();
 

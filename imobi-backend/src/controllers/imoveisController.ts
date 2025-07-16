@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { ImoveisService } from '@services/imoveisService';
-import { ImovelRepository } from '@repositories/imovelRepository';
+import { ImoveisService } from "../services/imoveisService";
+import { ImovelRepository } from "../repositories/imovelRepository";
 import { ImovelFilters } from '../types/imovel';
 
 const imovelRepository = new ImovelRepository();

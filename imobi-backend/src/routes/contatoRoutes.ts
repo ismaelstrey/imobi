@@ -1,12 +1,12 @@
 import express, { Router } from 'express';
-import { ContatoController } from '@controllers/contatoController';
-import { authenticate, requireAdmin } from '@middlewares/authMiddleware';
+import { ContatoController } from "../controllers/contatoController";
+import { authenticate, requireAdmin } from "../middlewares/authMiddleware";
 import { 
   validateContato, 
   validatePagination,
   validateId,
   handleValidationErrors 
-} from '@middlewares/validationMiddleware';
+} from "../middlewares/validationMiddleware";
 
 const router: express.Router = Router();
 

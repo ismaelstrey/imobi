@@ -1,7 +1,7 @@
-import { UserRepository } from '@repositories/userRepository';
+import { UserRepository } from "../repositories/userRepository";
 import { LoginData, RegisterData, AuthResponse, User } from '../types/auth';
-import { hashPassword, comparePassword, validatePasswordStrength } from '@utils/bcrypt';
-import { generateToken } from '@utils/jwt';
+import { hashPassword, comparePassword, validatePasswordStrength } from "../utils/bcrypt";
+import { generateToken } from "../utils/jwt";
 import type { User as PrismaUser } from '@prisma/client';
 
 // Função auxiliar para converter o objeto do Prisma para o tipo User

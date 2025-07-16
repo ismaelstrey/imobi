@@ -1,18 +1,29 @@
-import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 
 /**
- * Gera hash da senha usando bcrypt
+ * Gera hash da senha usando crypto (alternativa ao bcrypt)
  */
 export const hashPassword = async (password: string): Promise<string> => {
-  const saltRounds = 12;
-  return bcrypt.hash(password, saltRounds);
+  // Gera um salt aleatório
+  const salt = crypto.randomBytes(16).toString('hex');
+  // Usa 1000 iterações de PBKDF2 com SHA-512 (equivalente a ~12 rounds do bcrypt)
+  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+  // Armazena salt e hash juntos
+  return `${salt}:${hash}`;
 };
 
 /**
- * Compara senha com hash usando bcrypt
+ * Compara senha com hash usando crypto (alternativa ao bcrypt)
  */
-export const comparePassword = async (password: string, hash: string): Promise<boolean> => {
-  return bcrypt.compare(password, hash);
+export const comparePassword = async (password: string, storedHash: string): Promise<boolean> => {
+  // Extrai salt e hash
+  const [salt, hash] = storedHash.split(':');
+  // Se não estiver no formato esperado, retorna falso
+  if (!salt || !hash) return false;
+  // Calcula o hash da senha fornecida com o mesmo salt
+  const calculatedHash = crypto.pbkdf2Sync(password, salt, 1000, 64, 'sha512').toString('hex');
+  // Compara os hashes
+  return calculatedHash === hash;
 };
 
 /**
