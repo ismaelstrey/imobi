@@ -1,7 +1,6 @@
-import React, { createContext, useContext, ReactNode } from 'react'
-import { useFavorites } from './useFavorites'
+import { createContext } from 'react'
 
-interface FavoritesContextType {
+export interface FavoritesContextType {
   favorites: Array<{
     id: string
     imovelId: string
@@ -13,26 +12,8 @@ interface FavoritesContextType {
   getFavoriteIds: () => string[]
 }
 
-interface FavoritesProviderProps {
-  children: ReactNode
-}
+export const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined)
 
-const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined)
-
-export const FavoritesProvider: React.FC<FavoritesProviderProps> = ({ children }) => {
-  const favoritesData = useFavorites()
-
-  return (
-    <FavoritesContext.Provider value={favoritesData}>
-      {children}
-    </FavoritesContext.Provider>
-  )
-}
-
-export const useFavoritesContext = (): FavoritesContextType => {
-  const context = useContext(FavoritesContext)
-  if (context === undefined) {
-    throw new Error('useFavoritesContext deve ser usado dentro de um FavoritesProvider')
-  }
-  return context
-}
+// Re-exportando os componentes e hooks
+export { FavoritesProvider } from './FavoritesContextProvider'
+export { useFavoritesContext } from './useFavoritesContext'

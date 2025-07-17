@@ -8,7 +8,7 @@ interface PendingOperation {
   id: string
   type: 'create' | 'update' | 'delete'
   endpoint: string
-  data: any
+  data: unknown
   timestamp: number
 }
 
@@ -78,7 +78,7 @@ const generateId = () => {
  * @returns Promise com o resultado da sincronização
  */
 export const syncPendingOperations = async (
-  apiCall: (endpoint: string, method: string, data?: any) => Promise<any>
+  apiCall: (endpoint: string, method: string, data?: unknown) => Promise<unknown>
 ) => {
   const pendingOperations = getPendingOperations()
   

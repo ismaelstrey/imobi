@@ -27,7 +27,17 @@ export function requestNotificationPermission() {
 
 // Função para verificar se o app está instalado ou pode ser instalado
 export function setupInstallPrompt() {
-  let deferredPrompt: any;
+  // Define um tipo para o evento BeforeInstallPromptEvent
+  interface BeforeInstallPromptEvent extends Event {
+    readonly platforms: string[];
+    readonly userChoice: Promise<{
+      outcome: 'accepted' | 'dismissed';
+      platform: string;
+    }>;
+    prompt(): Promise<void>;
+  }
+
+  let deferredPrompt: BeforeInstallPromptEvent | null = null;
   const installButton = document.getElementById('install-button');
   
   window.addEventListener('beforeinstallprompt', (e) => {

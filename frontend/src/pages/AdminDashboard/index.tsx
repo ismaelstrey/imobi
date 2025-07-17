@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa'
@@ -39,7 +39,7 @@ export const AdminDashboard: React.FC = () => {
     initialPage: 1
   })
 
-  const loadImoveis = async () => {
+  const loadImoveis = useCallback(async () => {
     try {
       setLoading(true)
       const paginationParams: PaginationParams = {
@@ -81,11 +81,11 @@ export const AdminDashboard: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [pagination.currentPage, ITEMS_PER_PAGE])
 
   useEffect(() => {
     loadImoveis()
-  }, [pagination.currentPage, loadImoveis])
+  }, [pagination.currentPage, ITEMS_PER_PAGE, loadImoveis])
   
   // Carregar imóveis iniciais
   useEffect(() => {

@@ -3,9 +3,9 @@ import { useState, useEffect } from 'react'
 interface UseOfflineModeReturn {
   isOnline: boolean
   lastOnlineTime: Date | null
-  cachedData: Record<string, any>
-  saveToCache: (key: string, data: any) => void
-  getFromCache: (key: string) => any
+  cachedData: Record<string, unknown>
+  saveToCache: (key: string, data: unknown) => void
+  getFromCache: (key: string) => unknown
 }
 
 /**
@@ -14,7 +14,7 @@ interface UseOfflineModeReturn {
 export function useOfflineMode(): UseOfflineModeReturn {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
   const [lastOnlineTime, setLastOnlineTime] = useState<Date | null>(isOnline ? new Date() : null)
-  const [cachedData, setCachedData] = useState<Record<string, any>>(() => {
+  const [cachedData, setCachedData] = useState<Record<string, unknown>>(() => {
     // Recupera dados do cache do localStorage ao inicializar
     const savedCache = localStorage.getItem('@imobi:cache')
     return savedCache ? JSON.parse(savedCache) : {}
@@ -47,7 +47,7 @@ export function useOfflineMode(): UseOfflineModeReturn {
   /**
    * Salva dados no cache
    */
-  const saveToCache = (key: string, data: any) => {
+  const saveToCache = (key: string, data: unknown) => {
     setCachedData(prev => ({
       ...prev,
       [key]: {

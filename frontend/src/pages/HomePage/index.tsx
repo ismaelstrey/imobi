@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { apiService, Imovel, PaginationParams } from "../../services/api";
 import { PropertyCard } from "../../components/PropertyCard";
@@ -42,7 +42,7 @@ export const HomePage: React.FC = () => {
     initialPage: 1,
   });
 
-  const loadImoveis = async (
+  const loadImoveis = useCallback(async (
     currentFilters: Filters & PaginationParams = {}
   ) => {
     try {
@@ -107,16 +107,16 @@ export const HomePage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pagination.currentPage, itemsPerPage]);
 
   useEffect(() => {
     loadImoveis(filters);
-  }, [pagination.currentPage, itemsPerPage]);
+  }, [pagination.currentPage, itemsPerPage, loadImoveis, filters]);
 
   // Carregar imóveis iniciais
   useEffect(() => {
     loadImoveis(filters);
-  }, []);
+  }, [loadImoveis, filters]);
 
   const handleFiltersChange = (newFilters: Filters) => {
     // Ao mudar os filtros, voltamos para a primeira página

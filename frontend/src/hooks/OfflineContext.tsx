@@ -1,34 +1,15 @@
-import React, { createContext, useContext, ReactNode } from 'react'
-import { useOfflineMode } from './useOfflineMode'
+import { createContext } from 'react'
 
-interface OfflineContextType {
+export interface OfflineContextType {
   isOnline: boolean
   lastOnlineTime: Date | null
-  cachedData: Record<string, any>
-  saveToCache: (key: string, data: any) => void
-  getFromCache: (key: string) => any
+  cachedData: Record<string, unknown>
+  saveToCache: (key: string, data: unknown) => void
+  getFromCache: (key: string) => unknown
 }
 
-interface OfflineProviderProps {
-  children: ReactNode
-}
+export const OfflineContext = createContext<OfflineContextType | undefined>(undefined)
 
-const OfflineContext = createContext<OfflineContextType | undefined>(undefined)
-
-export const OfflineProvider: React.FC<OfflineProviderProps> = ({ children }) => {
-  const offlineMode = useOfflineMode()
-
-  return (
-    <OfflineContext.Provider value={offlineMode}>
-      {children}
-    </OfflineContext.Provider>
-  )
-}
-
-export const useOfflineContext = (): OfflineContextType => {
-  const context = useContext(OfflineContext)
-  if (context === undefined) {
-    throw new Error('useOfflineContext deve ser usado dentro de um OfflineProvider')
-  }
-  return context
-}
+// Re-exportando os componentes e hooks
+export { OfflineProvider } from './OfflineContextProvider'
+export { useOfflineContext } from './useOfflineContext'

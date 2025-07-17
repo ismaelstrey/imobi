@@ -118,18 +118,14 @@ const isOnline = () => navigator.onLine;
 /**
  * Faz uma chamada à API com suporte a modo offline
  */
-const apiCall = async (endpoint: string, method: string, data?: any) => {
-  try {
-    const config = {
-      method,
-      url: endpoint,
-      data,
-    };
-    const response = await api(config);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+const apiCall = async (endpoint: string, method: string, data?: unknown) => {
+  const config = {
+    method,
+    url: endpoint,
+    data,
+  };
+  const response = await api(config);
+  return response.data;
 };
 
 // Funções da API
