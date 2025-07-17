@@ -85,12 +85,12 @@ export const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     loadImoveis()
-  }, [pagination.currentPage])
+  }, [pagination.currentPage, loadImoveis])
   
   // Carregar imóveis iniciais
   useEffect(() => {
     loadImoveis()
-  }, [])
+  }, [loadImoveis])
 
   const formatPrice = (price: number): string => {
     return new Intl.NumberFormat('pt-BR', {
