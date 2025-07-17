@@ -59,7 +59,7 @@ const SyncManager: React.FC = () => {
     } catch (error) {
       setSyncResult({
         success: false,
-        message: 'Erro ao sincronizar dados'
+        message: `Erro ao sincronizar dados: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
       })
       setShowStatus(true)
     } finally {
