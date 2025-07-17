@@ -34,6 +34,9 @@ model Imovel {
   endereco    String
   cidade      String
   bairro      String?
+  estado      String?
+  cep      String?
+  areaTotal   Float?
   descricao   String
   areaUtil    Float
   dormitorios Int
